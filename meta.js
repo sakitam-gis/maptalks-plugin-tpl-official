@@ -1,5 +1,10 @@
 const pkg = require('./package.json');
 const templateVersion = pkg.version;
+const {
+  sortDependencies,
+  installDependencies,
+  printMessage,
+} = require('./utils');
 
 module.exports = {
   helpers: {
@@ -47,35 +52,17 @@ module.exports = {
       type: 'string',
       message: 'Author'
     },
-    scss: {
-      type: 'confirm',
-      message: 'Use scss for your style code?'
-    },
     lint: {
       type: 'confirm',
       message: 'Use ESLint to lint your code?'
     },
-    lintConfig: {
-      when: 'lint',
-      type: 'list',
-      message: 'Pick an ESLint preset',
-      choices: [
-        {
-          name: 'Standard (https://github.com/standard/standard)',
-          value: 'standard',
-          short: 'Standard'
-        },
-        {
-          name: 'Airbnb (https://github.com/airbnb/javascript)',
-          value: 'airbnb',
-          short: 'Airbnb'
-        },
-        {
-          name: 'none (configure it yourself)',
-          value: 'none',
-          short: 'none'
-        }
-      ]
+    runner: {
+      type: 'confirm',
+      message: 'Use test runner?',
+    },
+    travis: {
+      type: 'confirm',
+      message: 'Use travis ci for your code?',
     },
     autoInstall: {
       type: 'list',
@@ -100,8 +87,28 @@ module.exports = {
       ]
     }
   },
-  filters: {},
+  filters: {
+    '.eslintrc': 'lint',
+    '.eslintignore': 'lint',
+    '.travis.yml': 'travis',
+    'test/**/*': 'unit',
+    'test/index.js': 'runner',
+    'karma.config.js': 'runner'
+  },
   complete: function (data, {chalk}) {
-    const green = chalk.green
+    const green = chalk.green;
+    sortDependencies(data, green);
+    const cwd = path.join(process.cwd(), data.inPlace ? '' : data.destDirName)
+    if (data.autoInstall) {
+      installDependencies(cwd, data.autoInstall, green)
+        .then(() => {
+          printMessage(data, green)
+        })
+        .catch(e => {
+          console.log(chalk.red('Error:'), e)
+        })
+    } else {
+      printMessage(data, chalk)
+    }
   }
 };

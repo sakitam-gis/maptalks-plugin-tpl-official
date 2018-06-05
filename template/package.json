@@ -10,25 +10,32 @@
   "unpkg": "dist/maptalks.{{name}}.js",
   "namespace": "{{namespace}}",
   "scripts": {
-    "preversion": "npm test",
     "version": "gulp minify && git add -A dist",
-    "lint": "eslint index.js test/**/*.js",
+    {{#runner}}
+    "preversion": "npm test",
     "test": "gulp test",
+    {{/runner}}
+    {{#lint}}
+    "lint": "eslint index.js test/**/*.js",
     "pretest": "npm run lint",
-    "prepublish": "npm run lint && gulp minify"
+    {{/lint}}
+    "prepublish": "{{#lint}}npm run lint && {{/lint}}gulp minify"
   },
   "dependencies": {
     "maptalks": "^0.40.2"
   },
   "devDependencies": {
-    "babel-eslint": "^8.2.3",
     "babel-preset-es2015": "^6.24.1",
+    {{#lint}}
+    "babel-eslint": "^8.2.3",
     "eslint": "^4.19.1",
     "eslint-config-maptalks": "^0.3.0",
     "eslint-plugin-mocha": "^5.0.0",
+    {{/lint}}
+    {{#runner}}
+    "mocha": "^5.2.0"
     "expect-maptalks": "^0.4.1",
     "expect.js": "^0.3.1",
-    "gulp": "^3.9.1",
     "happen": "^0.3.2",
     "karma": "^2.0.2",
     "karma-chrome-launcher": "^2.2.0",
@@ -39,9 +46,10 @@
     "karma-ie-launcher": "^1.0.0",
     "karma-mocha": "^1.3.0",
     "karma-mocha-reporter": "^2.2.5",
+    {{/runner}}
     "maptalks-build-helpers": "^0.5.0",
     "minimist": "^1.2.0",
-    "mocha": "^5.2.0"
+    "gulp": "^3.9.1"
   },
   "peerDependencies": {
     "maptalks": "^0.40.2"
