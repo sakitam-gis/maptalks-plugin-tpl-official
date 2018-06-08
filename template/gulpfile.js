@@ -1,10 +1,9 @@
+const path = require('path');
 const gulp = require('gulp');
 const pkg = require('./package.json');
 const BundleHelper = require('maptalks-build-helpers').BundleHelper;
 {{#runner}}
-const TestHelper = require('maptalks-build-helpers').TestHelper;
-const testHelper = new TestHelper();
-const karmaConfig = require('./karma.config');
+const Server = require('karma').Server;
 {{/runner}}
 const bundleHelper = new BundleHelper(pkg);
 
@@ -21,14 +20,30 @@ gulp.task('watch', ['build'], () => {
 });
 
 {{#runner}}
-gulp.task('test', ['build'], () => {
-    testHelper.test(karmaConfig);
+/**
+ * Run test once and exit
+ */
+gulp.task('test', ['build'], function (done) {
+    const karmaConfig = {
+        configFile: path.join(__dirname, 'karma.config.js')
+    };
+    new Server(karmaConfig, done).start();
 });
 
-gulp.task('tdd', ['build'], () => {
-    karmaConfig.singleRun = false;
+/**
+ * Watch for file changes and re-run tests on each change
+ */
+gulp.task('tdd', function (done) {
+    const karmaConfig = {
+        configFile: path.join(__dirname, 'karma.config.js')
+    };
     gulp.watch(['index.js'], ['test']);
-    testHelper.test(karmaConfig);
+    let started = false;
+    if (!started) {
+        const karmaServer = new Server(karmaConfig, done);
+        karmaServer.start();
+        started = true;
+    }
 });
 {{/runner}}
 

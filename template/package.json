@@ -5,9 +5,10 @@
   "author": "{{author}}",
   "homepage": "{{homepage}}",
   "private": false,
-  "main": "dist/maptalks.{{name}}.common.js",
-  "module": "dist/maptalks.{{name}}.esm.js",
+  "main": "dist/maptalks.{{name}}.js",
+  "module": "dist/maptalks.{{name}}.mjs",
   "unpkg": "dist/maptalks.{{name}}.js",
+  "jsnext:main": "dist/maptalks.{{name}}.mjs",
   "namespace": "{{namespace}}",
   "scripts": {
     "version": "gulp minify && git add -A dist",
@@ -33,11 +34,11 @@
     "eslint-plugin-mocha": "^5.0.0",
     {{/lint}}
     {{#runner}}
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
     "expect-maptalks": "^0.4.1",
     "expect.js": "^0.3.1",
     "happen": "^0.3.2",
-    "karma": "^2.0.2",
+    "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-expect": "^1.1.3",
     "karma-expect-maptalks": "^0.1.5",
