@@ -15,10 +15,10 @@
     {{#runner}}
     "preversion": "npm test",
     "test": "gulp test",
+    "pretest": "npm run lint",
     {{/runner}}
     {{#lint}}
     "lint": "eslint index.js test/**/*.js",
-    "pretest": "npm run lint",
     {{/lint}}
     "prepublish": "{{#lint}}npm run lint && {{/lint}}gulp minify"
   },
