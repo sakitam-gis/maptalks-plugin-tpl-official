@@ -91,7 +91,7 @@ module.exports = {
     '.eslintrc': 'lint',
     '.eslintignore': 'lint',
     '.travis.yml': 'travis',
-    'test/**/*': 'unit',
+    'test/**/*': 'runner',
     'test/index.js': 'runner',
     'karma.config.js': 'runner'
   },
