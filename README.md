@@ -1,5 +1,7 @@
 ## maptalks-plugin-tpl-official
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/sakitam-gis/maptalks-plugin-tpl-official.svg)](https://greenkeeper.io/)
+
 ### use
 
 This is a project template for maptalks-cli. It is recommended to use npm 4+ for a more efficient dependency tree.
